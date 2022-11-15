@@ -1,9 +1,15 @@
-﻿<Application x:Class="GUISection.App"
+﻿<Application x:Class="University.DotnetLabs.Lab3.GUISection.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:University.DotnetLabs.Lab3.GUISection"
+             xmlns:converters="clr-namespace:University.DotnetLabs.Lab3.GUISection.Converters"
+             xmlns:asm="clr-namespace:University.DotnetLabs.Lab3.AssemblyBrowserLibrary;assembly=AssemblyBrowserLibrary"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <asm:AssemblyBrowser x:Key="MainAssemblyBrowser"/>
+        <converters:ObservableFieldInfoConverter x:Key="ObservableFieldInfoConverter"/>
+        <converters:ObservablePropertyInfoConverter x:Key="ObservablePropertyInfoConverter"/>
+        <converters:ObservableMethodInfoConverter x:Key="ObservableMethodInfoConverter"/>
+        <converters:ObservableTypeInfoConverter x:Key="ObservableTypeInfoConverter" />
     </Application.Resources>
 </Application>
