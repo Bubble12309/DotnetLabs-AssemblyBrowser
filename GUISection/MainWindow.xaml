@@ -1,12 +1,84 @@
-﻿<Window x:Class="GUISection.MainWindow"
+﻿<Window x:Class="University.DotnetLabs.Lab3.GUISection.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:University.DotnetLabs.Lab3.GUISection"
+        xmlns:vm="clr-namespace:University.DotnetLabs.Lab3.GUISection.ViewModel"
+        xmlns:asmstruct="clr-namespace:University.DotnetLabs.Lab3.AssemblyBrowserLibrary.Structures;assembly=AssemblyBrowserLibrary"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Icon="Resources/Icons/browser_light_colored_64.png"
+        Title="Assembly Browser" Height="600" Width="1100">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/MainWindowCoreStyles.xaml"/>
+                <ResourceDictionary>
+                    <Image x:Key="ImageAssemblyLight16" Source="Resources/Icons/assembly_light_16.png"/>
+                    <Image x:Key="ImageBrowserLightColored64" Source="Resources/Icons/browser_light_colored_64.png"/>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:MainWindowDataContext />
+    </Window.DataContext>
+    <Window.CommandBindings>
+        <CommandBinding Command="Open" Executed="CommandBinding_Executed"/>
+    </Window.CommandBindings>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="File">
+                <MenuItem Header="Choose Assembly" Icon ="{StaticResource ImageAssemblyLight16}"  Command="Open"/>
+            </MenuItem>
+        </Menu>
+        <ScrollViewer Grid.Row="1">
+            <TreeView x:Name="MainTreeView">
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate DataType="{x:Type asmstruct:ObservableNamespaceInfo}"
+                                          ItemsSource="{Binding Path=InternalTypes}"
+                                          >
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Path=Name}" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                    <DataTemplate DataType="{x:Type asmstruct:ObservableTypeInfo}">
+                        <TreeViewItem Header="{Binding Converter={StaticResource ObservableTypeInfoConverter}}">
+                            <TreeViewItem Header = "Methods" ItemsSource="{Binding Path=Methods}" Style="{StaticResource InvisibleIfEmpty}" />
+                            <TreeViewItem Header = "Fields" ItemsSource="{Binding Path=Fields}" Style="{StaticResource InvisibleIfEmpty}"/>
+                            <TreeViewItem Header = "Properties" ItemsSource="{Binding Path=Properties}" Style="{StaticResource InvisibleIfEmpty}"/>
+                        </TreeViewItem>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type asmstruct:ObservableMethodInfo}">
+                        <TextBlock Text="{Binding Converter={StaticResource ObservableMethodInfoConverter}}"/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type asmstruct:ObservablePropertyInfo}">
+                        <TextBlock Text="{Binding Converter={StaticResource ObservablePropertyInfoConverter}}"/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type asmstruct:ObservableFieldInfo}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Converter={StaticResource ObservableFieldInfoConverter}}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </TreeView.Resources>
 
+                <TreeViewItem ItemsSource="{Binding Browser.Demonstration.InternalNamespaces}" Style="{StaticResource InvisibleIfEmpty}">
+                    <TreeViewItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <!--Image-->
+                            <TextBlock Text="Assembly = "/>
+                            <TextBlock Text="{Binding Browser.Demonstration.AssemblyName.Name}"/>
+                            <TextBlock Text=", "/>
+                            <TextBlock Text="Version = "/>
+                            <TextBlock Text="{Binding Browser.Demonstration.AssemblyName.Version}"/>
+                        </StackPanel>
+                    </TreeViewItem.Header>
+                </TreeViewItem>
+            </TreeView>
+        </ScrollViewer>
     </Grid>
 </Window>
