@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using University.DotnetLabs.Lab3.AssemblyBrowserLibrary.Structures;
 
-namespace University.DotnetLabs.Lab3.AssemblyBrowserLibrary.Structures;
+namespace University.DotnetLabs.Lab3.AssemblyBrowserLibrary.Comparers;
 
-internal sealed class TypeInfoNameComparer : IComparer<TypeInfo?>
+internal sealed class ObservableMethodInfoComparer : IComparer<ObservableMethodInfo?>
 {
-    private TypeInfoNameComparer() { }
-    private static TypeInfoNameComparer? _instance = null;
-    private static Mutex _mutex = new();
-    public static TypeInfoNameComparer Default
+    private ObservableMethodInfoComparer() { }
+    private static ObservableMethodInfoComparer? _instance = null;
+    private static object _mutex = new();
+    public static ObservableMethodInfoComparer Default
     {
         get
         {
@@ -25,11 +25,13 @@ internal sealed class TypeInfoNameComparer : IComparer<TypeInfo?>
                         _instance = new();
                     }
                 }
+
             }
             return _instance;
         }
     }
-    public int Compare(TypeInfo? x, TypeInfo? y)
+
+    public int Compare(ObservableMethodInfo? x, ObservableMethodInfo? y)
     {
         if (x is null && y is null)
             return 0;
@@ -37,6 +39,6 @@ internal sealed class TypeInfoNameComparer : IComparer<TypeInfo?>
             return -1;
         if (y is null)
             return 1;
-        return string.Compare(x.Name, y.Name, ignoreCase: true);
+        return string.Compare(x.MethodName, y.MethodName, ignoreCase: true);
     }
 }

@@ -2,53 +2,85 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using University.DotnetLabs.Lab3.AssemblyBrowserLibrary.Comparers;
 
 namespace University.DotnetLabs.Lab3.AssemblyBrowserLibrary.Structures;
 
 public sealed class AssemblyStructure
 {
-    public AssemblyName Name { get; private set; }
-    public IReadOnlyCollection<TypeInfo> NonNamespaceTypes { get; private set; }
-    public IReadOnlyCollection<NamespaceInfo> InternalNamespaces { get; private set; }
+    public AssemblyName AssemblyName { get; private set; }
+    private ObservableCollection<ObservableNamespaceInfo> _internalNamespaces;
+    public ReadOnlyObservableCollection<ObservableNamespaceInfo> InternalNamespaces
+    {
+        get
+        {
+            return new(_internalNamespaces);
+        }
+    }
     internal AssemblyStructure(Assembly assembly)
     {
-        IDictionary<string, SortedSet<TypeInfo>> ditionary = new Dictionary<string, SortedSet<TypeInfo>>();
-        SortedSet<TypeInfo> nonNamespaceTypes = new(TypeInfoNameComparer.Default);
-        SortedSet<NamespaceInfo> namespaces = new(NamespaceInfoComparer.Default);
+        Dictionary<string, SortedSet<ObservableTypeInfo>> dictionary = new Dictionary<string, SortedSet<ObservableTypeInfo>>();
+        SortedSet<ObservableTypeInfo> nonNamespaceTypes = new(ObservableTypeInfoComparer.Default);
+        SortedSet<ObservableNamespaceInfo> namespaces = new(ObservableNamespaceInfoComparer.Default);
 
-        Name = assembly.GetName();
+        ExtensionsEncounter extensionsEncounter = new(nonNamespaceTypes, namespaces, dictionary);
+
+        AssemblyName = assembly.GetName();
         Type[] types = assembly.GetTypes();
-        foreach (Type type in types)
+        var extensionTypes = types.Where(type => type.IsDefined(typeof(ExtensionAttribute)));
+        var normalTypes = types.Except(extensionTypes);
+        
+        foreach (Type type in normalTypes)
         {
-            string? typeNamespace = type.Namespace;
-            if (typeNamespace is null)
+            string? namespaceOfType = type.Namespace;
+            
+            if (namespaceOfType is null)
             {
-                nonNamespaceTypes.Add(type.GetTypeInfo());
+                nonNamespaceTypes.Add(new ObservableTypeInfo(type.GetTypeInfo()));
             }
             else
             {
-                SortedSet<TypeInfo> namespaceTypes;
-                if (!ditionary.TryGetValue(typeNamespace, out namespaceTypes!))
+                SortedSet<ObservableTypeInfo> typesWithinNamespace;
+                if (!dictionary.TryGetValue(namespaceOfType, out typesWithinNamespace!))
                 {
-                    namespaceTypes = new SortedSet<TypeInfo>(TypeInfoNameComparer.Default);
-                    ditionary.Add(typeNamespace, namespaceTypes);
+                    typesWithinNamespace = new SortedSet<ObservableTypeInfo>(ObservableTypeInfoComparer.Default);
+                    dictionary.Add(namespaceOfType, typesWithinNamespace);
                 }
-                namespaceTypes.Add(type.GetTypeInfo());
+                typesWithinNamespace.Add(new ObservableTypeInfo(type.GetTypeInfo()));
             }
         }
 
-        NonNamespaceTypes = nonNamespaceTypes.ToImmutableSortedSet<TypeInfo>(TypeInfoNameComparer.Default);
-        foreach (KeyValuePair<string, SortedSet<TypeInfo>> keyValuePair in ditionary)
+        foreach (Type type in extensionTypes)
+        { 
+            var extensionMethods = type.GetMethods().Where(method => method.IsDefined(typeof(ExtensionAttribute)));
+            foreach (MethodInfo extensionMethod in extensionMethods)
+            {
+                extensionsEncounter.Encount(extensionMethod);
+            }
+        }
+        
+        foreach (KeyValuePair<string, SortedSet<ObservableTypeInfo>> keyValuePair in dictionary)
         {
-            NamespaceInfo namespaceInfo = new NamespaceInfo(keyValuePair.Key);
-            namespaceInfo.InternalTypes = keyValuePair.Value.ToImmutableSortedSet<TypeInfo>(TypeInfoNameComparer.Default);
+            ObservableNamespaceInfo namespaceInfo = new ObservableNamespaceInfo(keyValuePair.Key);
+            namespaceInfo.InternalTypes = new(new(keyValuePair.Value));
             namespaces.Add(namespaceInfo);
         }
-        InternalNamespaces = namespaces.ToImmutableSortedSet<NamespaceInfo>(NamespaceInfoComparer.Default);
+
+        ObservableCollection<ObservableNamespaceInfo> observableNamespaces = new(namespaces);
+        if (nonNamespaceTypes.Count > 0)
+        {
+            ObservableNamespaceInfo nullNamespace = new ObservableNamespaceInfo("");
+            ReadOnlyObservableCollection<ObservableTypeInfo> roNonObservableTypes = new(new(nonNamespaceTypes));
+            nullNamespace.InternalTypes = roNonObservableTypes;
+            observableNamespaces.Prepend(nullNamespace);
+        }
+        _internalNamespaces = new(observableNamespaces);
     }
 }

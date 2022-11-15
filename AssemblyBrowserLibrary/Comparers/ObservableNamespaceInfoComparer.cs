@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using University.DotnetLabs.Lab3.AssemblyBrowserLibrary.Structures;
 
-namespace University.DotnetLabs.Lab3.AssemblyBrowserLibrary.Structures;
+namespace University.DotnetLabs.Lab3.AssemblyBrowserLibrary.Comparers;
 
-internal sealed class NamespaceInfoComparer : IComparer<NamespaceInfo?>
+internal sealed class ObservableNamespaceInfoComparer : IComparer<ObservableNamespaceInfo?>
 {
-    private NamespaceInfoComparer() { }
-    private static NamespaceInfoComparer? _instance = null;
-    private static Mutex _mutex = new();
-    public static NamespaceInfoComparer Default 
+    private ObservableNamespaceInfoComparer() { }
+    private static ObservableNamespaceInfoComparer? _instance = null;
+    private static object _mutex = new();
+    public static ObservableNamespaceInfoComparer Default
     {
         get
         {
@@ -29,8 +30,8 @@ internal sealed class NamespaceInfoComparer : IComparer<NamespaceInfo?>
             return _instance;
         }
     }
-    
-    public int Compare(NamespaceInfo? x, NamespaceInfo? y)
+
+    public int Compare(ObservableNamespaceInfo? x, ObservableNamespaceInfo? y)
     {
         if (x is null && y is null)
             return 0;
