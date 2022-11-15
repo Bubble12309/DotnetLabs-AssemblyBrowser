@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUISection", "GUISection\GUISection.csproj", "{1F510365-D880-47FD-9A9C-447C1A3F6030}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GUISection", "GUISection\GUISection.csproj", "{1F510365-D880-47FD-9A9C-447C1A3F6030}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblyBrowserLibrary", "AssemblyBrowserLibrary\AssemblyBrowserLibrary.csproj", "{26F19168-AD73-4EEB-9A13-E3C4894709BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssemblyBrowserLibrary.Tests", "AssemblyBrowserLibrary.Tests\AssemblyBrowserLibrary.Tests.csproj", "{8B7A2CB2-85FD-42ED-817D-FF2910711015}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblyBrowserLibrary.Tests", "AssemblyBrowserLibrary.Tests\AssemblyBrowserLibrary.Tests.csproj", "{8B7A2CB2-85FD-42ED-817D-FF2910711015}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssemblyBrowserLibrary", "AssemblyBrowserLibrary\AssemblyBrowserLibrary.csproj", "{A7EBB94F-774C-41F9-9C94-24C0E8B83841}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtensionTest", "ExtensionTest\ExtensionTest.csproj", "{2144BDA0-632C-4CBF-8A0A-06FA34FAD98E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +21,18 @@ Global
 		{1F510365-D880-47FD-9A9C-447C1A3F6030}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F510365-D880-47FD-9A9C-447C1A3F6030}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F510365-D880-47FD-9A9C-447C1A3F6030}.Release|Any CPU.Build.0 = Release|Any CPU
-		{26F19168-AD73-4EEB-9A13-E3C4894709BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{26F19168-AD73-4EEB-9A13-E3C4894709BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{26F19168-AD73-4EEB-9A13-E3C4894709BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{26F19168-AD73-4EEB-9A13-E3C4894709BA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8B7A2CB2-85FD-42ED-817D-FF2910711015}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8B7A2CB2-85FD-42ED-817D-FF2910711015}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B7A2CB2-85FD-42ED-817D-FF2910711015}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B7A2CB2-85FD-42ED-817D-FF2910711015}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7EBB94F-774C-41F9-9C94-24C0E8B83841}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7EBB94F-774C-41F9-9C94-24C0E8B83841}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7EBB94F-774C-41F9-9C94-24C0E8B83841}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7EBB94F-774C-41F9-9C94-24C0E8B83841}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2144BDA0-632C-4CBF-8A0A-06FA34FAD98E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2144BDA0-632C-4CBF-8A0A-06FA34FAD98E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2144BDA0-632C-4CBF-8A0A-06FA34FAD98E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2144BDA0-632C-4CBF-8A0A-06FA34FAD98E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
