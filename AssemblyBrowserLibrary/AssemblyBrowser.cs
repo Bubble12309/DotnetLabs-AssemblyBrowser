@@ -13,18 +13,10 @@ public sealed class AssemblyBrowser : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private Assembly? _browsedAssembly;
     public Assembly? BrowsedAssembly
     {
-        get
-        {
-            return _browsedAssembly;
-        }
         set
         {
-            if (_browsedAssembly == value)
-                return;
-            _browsedAssembly = value;
             OnPropertyChanged();
             Demonstration = (value is null) ? null : new AssemblyStructure(value);
         }
