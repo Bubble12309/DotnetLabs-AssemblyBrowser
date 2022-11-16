@@ -24,7 +24,7 @@ public class ObservableFieldInfoConverter : IValueConverter
         sb.Append(AccessModifierToStringConverter.ConvertStatic(observableFieldInfo.Modifier)).Append(" ")
            .Append((observableFieldInfo.IsStatic) ? "static" : string.Empty).Append(" ")
            .Append((observableFieldInfo.IsReadOnly) ? "readonly" : string.Empty).Append(" ")
-           .Append(observableFieldInfo.TypeInfo.Name).Append(" ")
+           .Append(observableFieldInfo.TypeInfo.GetParametrizedArgumentName()).Append(" ")
            .Append(observableFieldInfo.Name);
         return sb.ToString();
     }

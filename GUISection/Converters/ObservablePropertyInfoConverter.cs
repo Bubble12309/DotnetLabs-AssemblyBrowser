@@ -21,7 +21,7 @@ public class ObservablePropertyInfoConverter : IValueConverter
     {
         ObservablePropertyInfo observablePropertyInfo = (ObservablePropertyInfo)value;
         StringBuilder sb = new StringBuilder();
-        sb.Append($"{observablePropertyInfo.TypeInfo?.Name} ").
+        sb.Append($"{observablePropertyInfo.TypeInfo?.GetParametrizedArgumentName()} ").
            Append(observablePropertyInfo.Name).Append(" {").
            Append((observablePropertyInfo.GetterAccessModifier is not null) ?
                     AccessModifierToStringConverter.ConvertStatic((AccessModifier)observablePropertyInfo.GetterAccessModifier) + " get; " : string.Empty).

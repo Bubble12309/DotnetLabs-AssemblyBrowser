@@ -39,8 +39,25 @@ public class ObservableMethodInfoConverter : IValueConverter
             }
         }
         if (!info.IsConstructor)
-            sb.Append($"{info.ReturnTypeInfo.Name} ");
-        sb.Append(info.MethodName).Append("(");
+            sb.Append($"{info.ReturnTypeInfo.GetParametrizedArgumentName()} ");
+        sb.Append(info.MethodName);
+        if (info.IsGenericMethod && info.GenericParameters is not null)
+        {
+            sb.Append("<");
+            for (int i = 0; i<info.GenericParameters.Length-1; i++)
+            {
+                TypeInfo typeInfo = info.GenericParameters[i];
+                sb.Append(typeInfo.GetParametrizedTypeName()).Append(", ");
+            }
+            if (info.GenericParameters.Length > 0)
+            {
+                TypeInfo typeInfo = info.GenericParameters[info.GenericParameters.Length - 1];
+                sb.Append(typeInfo.GetParametrizedTypeName());
+            }
+            sb.Append(">");
+        }
+        
+        sb.Append("(");
         for (int i = 0; i < info.ParametersInfo.Length - 1; i++)
         {
             ParameterInfo pi = info.ParametersInfo[i];
@@ -50,7 +67,7 @@ public class ObservableMethodInfoConverter : IValueConverter
                 sb.Append("out ");
             if (pi.ParameterType.IsByRef)
                 sb.Append("ref ");
-            sb.Append($"{pi.ParameterType.Name} {pi.Name}");
+            sb.Append($"{pi.ParameterType.GetTypeInfo().GetParametrizedArgumentName()} {pi.Name}");
             if (pi.HasDefaultValue)
                 sb.Append($" = {pi.DefaultValue}");
             sb.Append(", ");
@@ -64,7 +81,7 @@ public class ObservableMethodInfoConverter : IValueConverter
                 sb.Append("out ");
             else if (pi.ParameterType.IsByRef)
                 sb.Append("ref ");
-            sb.Append($"{pi.ParameterType.Name} {pi.Name}");
+            sb.Append($"{pi.ParameterType.GetTypeInfo().GetParametrizedArgumentName()} {pi.Name}");
             if (pi.HasDefaultValue)
                 sb.Append($" = {pi.DefaultValue}");
         }

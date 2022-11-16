@@ -16,7 +16,7 @@ public class ObservablePropertyInfo
     internal ObservablePropertyInfo(PropertyInfo propertyInfo, AccessModifier? getterAccessModifier, AccessModifier? setterAccessModifier)
     {
         Name = propertyInfo.Name;
-        TypeInfo = propertyInfo.DeclaringType?.GetTypeInfo();
+        TypeInfo = propertyInfo.PropertyType.GetTypeInfo();
         GetterAccessModifier = getterAccessModifier;
         SetterAccessModifier = setterAccessModifier;   
     }

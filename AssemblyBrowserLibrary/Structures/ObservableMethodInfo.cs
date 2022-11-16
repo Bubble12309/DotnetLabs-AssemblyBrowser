@@ -19,6 +19,9 @@ public class ObservableMethodInfo
     public bool IsAbstract { get; }
     public bool IsVirtual { get; }
     public bool IsFinal { get; }
+
+    public bool IsGenericMethod { get; }
+    public TypeInfo[]? GenericParameters { get; }
     public ParameterInfo[] ParametersInfo { get; internal set; }
     public TypeInfo ReturnTypeInfo { get; }
 
@@ -30,6 +33,7 @@ public class ObservableMethodInfo
         ReturnTypeInfo = methodInfo.ReturnType.GetTypeInfo();
         IsExtensionMethod = methodInfo.IsDefined(typeof(ExtensionAttribute));
         ParametersInfo = methodInfo.GetParameters();
+        IsGenericMethod = methodInfo.IsGenericMethod;
 
         if (methodInfo.IsPrivate)
         {
@@ -54,6 +58,17 @@ public class ObservableMethodInfo
         else if (methodInfo.IsPublic)
         {
             Modifier = AccessModifier.Public;
+        }
+
+        if (methodInfo.IsGenericMethodDefinition)
+        {
+            Type[] types = methodInfo.GetGenericArguments();
+            TypeInfo[] typesInfo = new TypeInfo[types.Length];
+            for (int i = 0; i < types.Length; i++)
+            {
+                typesInfo[i] = types[i].GetTypeInfo();
+            }
+            GenericParameters = typesInfo;
         }
 
         if (IsExtensionMethod)

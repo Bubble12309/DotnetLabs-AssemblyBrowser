@@ -66,7 +66,7 @@ public sealed class ObservableTypeInfo
         SortedSet<ObservableFieldInfo> fieldsCollection = new(ObservableFieldInfoComparer.Default);
         SortedSet<ObservablePropertyInfo> propertiesCollection = new(ObservablePropertyInfoComparer.Default);
 
-        Name = typeInfo.Name;
+        Name = typeInfo.GetParametrizedTypeName();
         Namespace = typeInfo.Namespace;
         IsAbstract = typeInfo.IsAbstract;
         if (typeInfo.IsClass)

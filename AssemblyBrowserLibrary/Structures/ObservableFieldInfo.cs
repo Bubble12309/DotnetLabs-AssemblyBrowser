@@ -18,7 +18,7 @@ public class ObservableFieldInfo
     internal ObservableFieldInfo(FieldInfo fieldInfo)
     { 
         Name = fieldInfo.Name;
-        TypeInfo = fieldInfo.DeclaringType.GetTypeInfo();
+        TypeInfo = fieldInfo.FieldType.GetTypeInfo();
         IsStatic = fieldInfo.IsStatic;
         IsReadOnly = fieldInfo.IsInitOnly;
         if (fieldInfo.IsPrivate)
